@@ -4,7 +4,7 @@ Donate link: http://www.itsupportguides.com/
 Tags: Gravity Forms, WCAG
 Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,8 @@ Use the CKEditor WYSIWYG in your Gravity Forms
 This plugin extends the [Gravity Forms](http://www.gravityforms.com/ "Gravity Forms website") plugin, giving you the option to use [CKEditor](http://ckeditor.com/ "CKEditor website") in your forms.
 
 The CKEditor can be configured from the Gravity Forms settings menu, allowing you to select which individual buttons are used in the editor.
+
+The CKEditor can be added to the 'Paragraph Text' field found in the 'Standard Fields' tab as well as the 'Body' and 'Custom Field - Paragraph Text' fields found in the 'Post Fields' tab.
 
 Why use CKEditor? CKEditor is a feature packed WYSIWYG that meets the WCAG 2.0 requirements, providing the best accessibility for your users.
 
@@ -84,6 +86,9 @@ The plugin will use the 'Maximum Characters' configured for the field in the Gra
 Most importantly, the plugin will only count characters - not spaces and not formatting HTML markup.
 
 == Changelog ==
+
+= 1.1.0 =
+* Feature: extended to work with 'Body' field (found under 'Post Fields' tab) and 'Custom Field - Paragraph Text'  field (found under 'Post Fields' tab).
 
 = 1.0.1 =
 * Fix: resolve issue that caused the 'Strength Indicator' in the Gravity Forms 'Password' field to not work.

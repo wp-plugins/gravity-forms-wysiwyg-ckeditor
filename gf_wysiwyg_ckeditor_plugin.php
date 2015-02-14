@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms - WYSIWYG CKEditor
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.0.1
+Version: 1.1.0
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -171,7 +171,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          */
 		public static function itsg_gf_wysiwyg_ckeditor_add_max_char($content, $field, $value, $lead_id, $form_id){
 			$field_type = rgar($field,"type");
-			if ($field_type == 'textarea') {
+			if ('post_content' == $field_type  || 'textarea' == $field_type || ('post_custom_field' == $field_type  && 'textarea' == $field['inputType'])) {
 				$label = rgar($field,"label");
 				$limit = rgar($field,"maxLength");
 				if ('' == $limit) {$limit = 'unlimited';};
@@ -206,7 +206,8 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          */
 		public static function itsg_gf_wysiwyg_ckeditor_css_class($classes, $field, $form)
         {
-			if ('textarea' == $field["type"]) {
+			$field_type = rgar($field,"type");
+			if ('post_content' == $field_type  || 'textarea' == $field_type || ('post_custom_field' == $field_type  && 'textarea' == $field['inputType'])) {
 				if (array_key_exists('enable_wysiwyg_ckeditor', $field)) {
 					 $classes .= " gform_wysiwyg_ckeditor";
 				}
@@ -240,7 +241,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 
 				jQuery(document).bind("gform_load_field_settings", function (event, field, form) {
 					var field_type = field['type'];
-					if (field_type == 'textarea') {
+					if ('post_content' == field_type  || 'textarea' == field_type || ('post_custom_field' == field_type  && 'textarea' == field['inputType'])) {
 
 						var $wysiwyg_container = jQuery(".wysiwyg_field_setting_wysiwyg_ckeditor");
 
