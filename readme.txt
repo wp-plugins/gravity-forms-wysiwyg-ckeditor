@@ -4,7 +4,7 @@ Donate link: http://www.itsupportguides.com/
 Tags: Gravity Forms, WCAG
 Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,10 +85,8 @@ Most importantly, the plugin will only count characters - not spaces and not for
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix: resolve issue that caused the 'Strength Indicator' in the Gravity Forms 'Password' field to not work.
+
 = 1.0 =
 * First public release.
-
-== Upgrade Notice ==
-
-= 1.0 =
-First public release.

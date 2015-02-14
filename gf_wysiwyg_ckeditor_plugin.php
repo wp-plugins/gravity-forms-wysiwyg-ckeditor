@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms - WYSIWYG CKEditor
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.0
+Version: 1.0.1
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -206,7 +206,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          */
 		public static function itsg_gf_wysiwyg_ckeditor_css_class($classes, $field, $form)
         {
-			if ($field["type"] = 'textarea') {
+			if ('textarea' == $field["type"]) {
 				if (array_key_exists('enable_wysiwyg_ckeditor', $field)) {
 					 $classes .= " gform_wysiwyg_ckeditor";
 				}
@@ -283,7 +283,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          */
 		private static function is_wysiwyg_ckeditor($field) {
 			$type = self::get_type($field);
-			if ($type = 'post_content' || $type = 'textarea') {
+			if ('post_content' == $type || 'textarea' == $type) {
 				if (array_key_exists('enable_wysiwyg_ckeditor', $field)) {
 					return $field['enable_wysiwyg_ckeditor'] == 'true';
 				}
