@@ -3,8 +3,8 @@ Contributors: ovann86
 Donate link: http://www.itsupportguides.com/
 Tags: Gravity Forms, WCAG
 Requires at least: 4.0
-Tested up to: 4.1
-Stable tag: 1.1.1
+Tested up to: 4.2.2
+Stable tag: 1.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,9 @@ The plugin will use the 'Maximum Characters' configured for the field in the Gra
 Most importantly, the plugin will only count characters - not spaces and not formatting HTML markup.
 
 == Changelog ==
+
+= 1.1.2 =
+* Fix: Moved jQuery script to footer to resolve errors where it loaded before jQuery was ready.
 
 = 1.1.1 =
 * Fix: add space in textarea between 'data-maxlen' and 'name' attributes. All browsers worked without the space, but was technically invalid HTML.
