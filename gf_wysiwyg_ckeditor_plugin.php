@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms - WYSIWYG CKEditor
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.2.0
+Version: 1.2.1
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -199,7 +199,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				$limit = rgar($field,"maxLength");
 				if ('' == $limit) {$limit = 'unlimited';};
 				$content = str_replace("<textarea ","<textarea data-maxlen='".$limit."' ",$content);
-				if (is_admin()){
+				if (is_admin() && self::is_wysiwyg_ckeditor($field) ){
 					$content = str_replace("class='","class='gform_wysiwyg_ckeditor ",$content);
 				}
 			}
