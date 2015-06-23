@@ -4,7 +4,7 @@ Donate link: http://www.itsupportguides.com/
 Tags: Gravity Forms, WCAG
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,7 @@ This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reload
 5. Shows the WYSIWYG CKEditor settings page where you can configure which buttons are used in CKEditor.
 6. Shows the WYSIWYG CKEditor with all the buttons enabled.
 7. Shows the WYSIWYG CKEditor where the maximum characters have been met. The character counter shows the limit has been reached by changing to red. The WYSIWYG CKEditor field does not allow more text to be entered when the limit has been reached.
+8. Shows the WYSIWYG CKEditor in the entry editor screen.
 
 == Frequently Asked Questions ==
 
@@ -85,7 +86,16 @@ The plugin will use the 'Maximum Characters' configured for the field in the Gra
 
 Most importantly, the plugin will only count characters - not spaces and not formatting HTML markup.
 
+= Does this support image uploading? =
+
+No - not at this point in time.
+
 == Changelog ==
+
+= 1.2.0 =
+* Feature: Add CKEditor support for entry editor screen - seen when editing entries with WYSIWYG enabled paragraph fields.
+* Fix: Added function to remove blank lines between paragraphs when field is saved. This improves how the field is displayed in the entry editor screen and improves compatibility with GravityPDF.
+* Maintenance: General tidy up of PHP layout. Use wp_enqueue_script for JS files. 
 
 = 1.1.2 =
 * Fix: Moved jQuery script to footer to resolve errors where it loaded before jQuery was ready.
