@@ -1,20 +1,20 @@
-.cke {
-    margin-bottom: 30px;
-}
-
-.cke_bottom {
-	overflow: initial;
-    height: 17px;
-}
-
-.cke_wordcount {
-    display: inline;
-    left: 0;
-    position: absolute;
-    top: 15px;
-    font-family: Verdana,​Helvetica,​Arial,​sans-serif;
-}
-
-.cke_wordcount.cke_wordcountLimitReached {
-    color: #d90000;
+.cke {
+    margin-bottom: 30px;
+}
+
+.cke_bottom {
+	overflow: initial;
+    height: 17px;
+}
+
+.cke_wordcount {
+    display: inline;
+    left: 0;
+    position: absolute;
+    top: 15px;
+    font-family: Verdana,​Helvetica,​Arial,​sans-serif;
+}
+
+.cke_wordcount.cke_wordcountLimitReached {
+    color: #d90000;
 }

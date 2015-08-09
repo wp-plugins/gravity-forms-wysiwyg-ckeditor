@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Gravity Forms - WYSIWYG CKEditor
+Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.2.1
+Version: 1.3.0
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -22,7 +22,15 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          * Construct the plugin object
          */
         public function __construct()
-        {
+        {	// register plugin functions through 'plugins_loaded' -
+			// this delays the registration until all plugins have been loaded, ensuring it does not run before Gravity Forms is available.
+            add_action( 'plugins_loaded', array(&$this,'register_actions') );
+		}
+		
+		/*
+         * Register plugin functions
+         */
+		function register_actions() {
 		// register actions
             if (self::is_gravityforms_installed()) {
 				//start plug in
@@ -81,7 +89,10 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 			wp_enqueue_script('ITSG_gf_wysiwyg_ckeditor_jquery_adapter', plugin_dir_url( __FILE__ ) . '/ckeditor/adapters/jquery.js' );
 			
 				?>
-				<script type="text/javascript">
+				<script>
+				
+				function itsg_gf_wysiwyg_ckeditor_function(self){
+					
 				(function( $ ) {
 					"use strict";
 					$(function(){
@@ -186,6 +197,17 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 
 					});
 				}(jQuery));
+				
+				}
+				
+				// runs the main function when the page loads
+
+				jQuery(document).bind('gform_post_render', function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
+
+				// runs the main function when the page loads (for ajax enabled forms)
+
+				jQuery(document).ready(function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
+				
 				</script>
 				<?php
 		}
