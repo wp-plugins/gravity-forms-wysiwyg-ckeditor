@@ -18,9 +18,11 @@ The CKEditor can be configured from the Gravity Forms settings menu, allowing yo
 
 The CKEditor can be added to the 'Paragraph Text' field found in the 'Standard Fields' tab as well as the 'Body' and 'Custom Field - Paragraph Text' fields found in the 'Post Fields' tab.
 
-Why use CKEditor? CKEditor is a feature packed WYSIWYG that meets the WCAG 2.0 requirements, providing the best accessibility for your users.
+**Why use CKEditor?**
 
-This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reloaded](https://wordpress.org/plugins/gravity-forms-data-persistence-add-on-reloaded/ "Gravity Forms Data Persistence Add-On Reloaded website") and [Gravity PDF](https://wordpress.org/plugins/gravity-forms-pdf-extended/"Gravity PDF website") plugins.
+[CKEditor](http://ckeditor.com/ "CKEditor website") is a feature packed WYSIWYG that meets the WCAG 2.0 requirements, providing the best accessibility for your users.
+
+This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reloaded](https://wordpress.org/plugins/gravity-forms-data-persistence-add-on-reloaded/ "Gravity Forms Data Persistence Add-On Reloaded website") and [Gravity PDF](https://wordpress.org/plugins/gravity-forms-pdf-extended/ "Gravity PDF website") plugins.
 
 **Disclaimer**
 
@@ -52,23 +54,24 @@ This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reload
 
 == Frequently Asked Questions ==
 
-= What are the buttons =
+= What are the default buttons =
 
 By default a limited number of the CKEditor buttons are used. These are:
-* Bold
-* Italic
-* Underline
-* Paste as text
-* Paste from word
-* Numbered list
-* Bulleted list
-* Outdent
-* Indent
-* Link
-* Unlink
-* Format
-* Font
-* Font size
+
+ * Bold
+ * Italic
+ * Underline
+ * Paste as text
+ * Paste from word
+ * Numbered list
+ * Bulleted list
+ * Outdent
+ * Indent
+ * Link
+ * Unlink
+ * Format
+ * Font
+ * Font size
 
 = How do I enable more buttons? =
 
@@ -82,7 +85,7 @@ Here you will find a list of all the available buttons that can be added to the 
 
 = What version of CKEditor does this use? =
 
-CKEditor 4.4.7
+CKEditor 4.5.2
 
 = How does the character counter work? =
 
@@ -90,7 +93,7 @@ The character counter works by using the 'wordcount' CKEditor plugin.
 
 The plugin will use the 'Maximum Characters' configured for the field in the Gravity Forms form editor.
 
-Most importantly, the plugin will only count characters - not spaces and not formatting HTML markup.
+Most importantly, the plugin **will only count characters** - not spaces and not formatting HTML markup.
 
 = Does this support image uploading? =
 
