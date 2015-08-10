@@ -4,7 +4,7 @@ Donate link: http://www.itsupportguides.com/
 Tags: Gravity Forms, CKEditor, WYSIWYG, WCAG
 Requires at least: 4.0
 Tested up to: 4.2.5
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,12 @@ The CKEditor can be added to the 'Paragraph Text' field found in the 'Standard F
 Why use CKEditor? CKEditor is a feature packed WYSIWYG that meets the WCAG 2.0 requirements, providing the best accessibility for your users.
 
 This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reloaded](https://wordpress.org/plugins/gravity-forms-data-persistence-add-on-reloaded/ "Gravity Forms Data Persistence Add-On Reloaded website") and [Gravity PDF](https://wordpress.org/plugins/gravity-forms-pdf-extended/"Gravity PDF website") plugins.
+
+**Disclaimer**
+
+*Gravity Forms is a trademark of Rocketgenius, Inc.*
+
+*This plugins is provided “as is” without warranty of any kind, expressed or implied. The author shall not be liable for any damages, including but not limited to, direct, indirect, special, incidental or consequential damages or losses that occur out of the use or inability to use the plugin.*
 
 == Installation ==
 
@@ -91,6 +97,9 @@ Most importantly, the plugin will only count characters - not spaces and not for
 No - not at this point in time.
 
 == Changelog ==
+
+= 1.3.1 =
+* Maintenance: Upgrade CKEDITOR to Version 4.5.2 - FULL (4 Aug 2015). Version 1.3.0 inadvertently included the CKEDITOR STANDARD - which does not include some of the formatting options.
 
 = 1.3.0 =
 * Fix: Resolve issue with plugin attempting to load before Gravity Forms has loaded, making this plugin not function.

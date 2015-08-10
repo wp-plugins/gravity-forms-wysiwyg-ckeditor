@@ -2,7 +2,7 @@
 /*
 Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.3.0
+Version: 1.3.1
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -15,7 +15,7 @@ require_once(plugin_dir_path( __FILE__ ).'gf_wysiwyg_ckeditor_settings.php');
 if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
     class ITSG_GF_WYSIWYG_CKEditor
     {
-	private static $name = 'Gravity Forms - WYSIWYG CKEditor';
+	private static $name = 'CKEditor WYSIWYG for Gravity Forms';
     private static $slug = 'itsg_gf_wysiwyg_ckeditor';
 	
         /**
