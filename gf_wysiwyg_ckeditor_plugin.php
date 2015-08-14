@@ -2,7 +2,7 @@
 /*
 Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.3.1
+Version: 1.4.0
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -15,7 +15,7 @@ require_once(plugin_dir_path( __FILE__ ).'gf_wysiwyg_ckeditor_settings.php');
 if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
     class ITSG_GF_WYSIWYG_CKEditor
     {
-	private static $name = 'CKEditor WYSIWYG for Gravity Forms';
+	private static $name = 'Gravity Forms - WYSIWYG CKEditor';
     private static $slug = 'itsg_gf_wysiwyg_ckeditor';
 	
         /**
@@ -33,6 +33,8 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 		function register_actions() {
 		// register actions
             if (self::is_gravityforms_installed()) {
+				$ur_settings = self::get_options();
+				
 				//start plug in
 
 				add_action('gform_enqueue_scripts',  array(&$this, 'itsg_gf_wysiwyg_ckeditor_js'), 10, 2);
@@ -43,11 +45,10 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				add_action('gform_field_css_class', array(&$this,'itsg_gf_wysiwyg_ckeditor_css_class'), 10, 3);
 				add_filter('gform_field_content',  array(&$this,'itsg_gf_wysiwyg_ckeditor_add_max_char'), 10, 5);
 				add_filter('gform_counter_script', array(&$this,'itsg_gf_wysiwyg_ckeditor_counter_script'), 10, 4);
-				register_activation_hook( __FILE__, array(&$this,'itsg_gf_wysiwyg_ckeditor_plugin_defaults'));
 				add_filter('gform_save_field_value',  array(&$this,'save_field_value'), 10, 4);
 				
-				// only enqueue in entry editor
-				if(RGForms::get("page") == "gf_entries") {
+				// enqueue in entry editor and form editor
+				if(RGForms::get("page") == "gf_entries" || (RGForms::get("page") == "gf_edit_forms" && $ur_settings['enable_in_form_editor'] == 'on' )) {
 					add_action('admin_footer',  array(&$this, 'itsg_gf_wysiwyg_ckeditor_js_script'));
 				}
 				
@@ -56,7 +57,33 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 					RGForms::add_settings_page("WYSIWYG ckeditor", array("ITSG_GF_WYSIWYG_ckeditor_settings_page", "settings_page"), self::get_base_url() . "/images/user-registration-icon-32.png");
 				}
 			}
-		}
+		} // END register_actions
+		
+		/* 
+		 *   Handles the plugin options.
+		 *   Default values are stored in an array.
+		 */ 
+		public static function get_options(){
+			$defaults = array(
+				'enable_in_form_editor' => 'on',
+				'enable_bold' => 'on',
+				'enable_italic' => 'on',
+				'enable_underline' => 'on',
+				'enable_pastetext' => 'on',
+				'enable_pastefromword' => 'on',
+				'enable_numberedlist' => 'on',
+				'enable_bulletedlist' => 'on',
+				'enable_outdent' => 'on',
+				'enable_indent' => 'on',
+				'enable_link' => 'on',
+				'enable_unlink' => 'on',
+				'enable_format' => 'on',
+				'enable_font' => 'on',
+				'enable_fontsize' => 'on'
+			);
+			$options = wp_parse_args(get_option('ITSG_gf_wysiwyg_ckeditor_settings'), $defaults);
+			return $options;
+		} // END get_options
 		
 		/*
          * Modifies the value before saved to the database - removes line spaces
@@ -75,29 +102,39 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          * Place ckeditor JavaScript in footer, applies ckeditor to 'textarea' fields 
          */
 		public static function itsg_gf_wysiwyg_ckeditor_js($form, $is_ajax) {
-			foreach ( $form['fields'] as $field ) {
-				if (self::is_wysiwyg_ckeditor($field)) {
-					add_action('wp_footer', array('ITSG_GF_WYSIWYG_CKEditor', 'itsg_gf_wysiwyg_ckeditor_js_script'));
+			if (is_array($form['fields']) || is_object($form['fields'])) {
+				foreach ( $form['fields'] as $field ) {
+					if (self::is_wysiwyg_ckeditor($field)) {
+						add_action('wp_footer', array('ITSG_GF_WYSIWYG_CKEditor', 'itsg_gf_wysiwyg_ckeditor_js_script'));
+					}
 				}
 			}
 		} // END itsg_gf_wysiwyg_ckeditor_js
 		
 		public static function itsg_gf_wysiwyg_ckeditor_js_script() {
-			$ur_settings = get_option('ITSG_gf_wysiwyg_ckeditor_settings') ? get_option('ITSG_gf_wysiwyg_ckeditor_settings') : array();
+			$ur_settings = self::get_options();
 			
-			wp_enqueue_script('ITSG_gf_wysiwyg_ckeditor_js', plugin_dir_url( __FILE__ ) . '/ckeditor/ckeditor.js' );
-			wp_enqueue_script('ITSG_gf_wysiwyg_ckeditor_jquery_adapter', plugin_dir_url( __FILE__ ) . '/ckeditor/adapters/jquery.js' );
+			wp_enqueue_script('ITSG_gf_wysiwyg_ckeditor_js', plugin_dir_url( __FILE__ ) . 'ckeditor/ckeditor.js' );
+			wp_enqueue_script('ITSG_gf_wysiwyg_ckeditor_jquery_adapter', plugin_dir_url( __FILE__ ) . 'ckeditor/adapters/jquery.js' );
 			
 				?>
 				<script>
 				
 				function itsg_gf_wysiwyg_ckeditor_function(self){
+					<?php if (RGForms::get("page") == "gf_edit_forms") { ?>
+					// if in Gravity Forms form editor
+					// destroy any active CKeditor instances first
+					for(i in CKEDITOR.instances) {
+						CKEDITOR.instances[i].destroy();
+					}
+					<?php } ?>
 					
 				(function( $ ) {
 					"use strict";
 					$(function(){
-						$('.gform_wysiwyg_ckeditor textarea').each(function() {
+						$('.gform_page:not(.gform_page[style="display:none;"]) .gform_wysiwyg_ckeditor textarea:not([disabled=disabled]), #field_settings textarea:not([disabled=disabled])').each(function() {
 							$(this).ckeditor(CKEDITOR.tools.extend( {
+							<?php if (RGForms::get("page") !== "gf_edit_forms") { ?>
 							extraPlugins : 'wordcount', 
 							wordcount : {
 								showParagraphs : false,
@@ -106,6 +143,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 								charLimit: $(this).attr('data-maxlen'),
 								hardLimit: true 
 							},
+							<?php } ?>
 							toolbar: [
 								<?php   /* SOURCE */
 								if (rgar($ur_settings, 'enable_source')) { echo "{ name: 'source', items: [ 'Source' ] },";} ?>
@@ -188,9 +226,20 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 							allowedContent: true
 							}));
 							
-							<?php if (self::is_dpr_installed() ) { ?>
+							<?php if (RGForms::get("page") == "gf_edit_forms") { ?>
 							for (var i in CKEDITOR.instances) {
-								CKEDITOR.instances[i].on('change', function() {changed = true;});
+								CKEDITOR.instances[i].on('key', function() {
+									SetFieldDescription(this.getData());
+								});
+							}
+							<?php } ?>
+							
+							<?php if (self::is_dpr_installed() && !is_admin() ) { ?>
+							for (var i in CKEDITOR.instances) {
+								CKEDITOR.instances[i].on('change', function() {
+									CKEDITOR.instances[i].updateElement();    
+									changed = true;
+								});
 							}
 							<?php } ?>
 						});
@@ -200,6 +249,14 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				
 				}
 				
+				<?php if (RGForms::get("page") == "gf_edit_forms") { ?>
+				
+				// runs the main function when field settings have been opened in the form editor
+				
+				jQuery(document).bind('gform_load_field_settings', function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
+				
+				<?php } else { ?>
+				
 				// runs the main function when the page loads
 
 				jQuery(document).bind('gform_post_render', function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
@@ -208,9 +265,11 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 
 				jQuery(document).ready(function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
 				
+				<?php }  ?>
 				</script>
 				<?php
-		}
+		} // END itsg_gf_wysiwyg_ckeditor_js_script
+		
 		/*
          * Customises 'Paragraph Text' field output to include character limit details and CSS class for admin area
          */
@@ -276,7 +335,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				</li>
 			<?php
 			}
-		}
+		} // END itsg_gf_wysiwyg_ckeditor_field_settings
 		
 		/*
          * JavaScript for form editor
@@ -312,7 +371,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				});
 			</script>
 		<?php
-		}
+		} // END itsg_gf_wysiwyg_ckeditor_editor_js
 		
 		/*
          * Tooltip for field in form editor
@@ -320,7 +379,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 		public static function itsg_gf_wysiwyg_ckeditor_field_tooltips($tooltips){
 			$tooltips["form_field_enable_wysiwyg_ckeditor"] = "<h6>Enable WYSIWYG</h6>Check this box to turn this field into a WYSIWYG editor, using ckeditor.";
 			return $tooltips;
-		}
+		} // END itsg_gf_wysiwyg_ckeditor_field_tooltips
 
 		/*
          * Checks if field is CKEditor enabled
@@ -333,7 +392,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				}
 			}
 			return false;
-		}
+		} // END is_wysiwyg_ckeditor
 		
 		/*
          * Get field type
@@ -349,7 +408,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				}
 				return $type;
 			}
-		}
+		} // END get_type
 	
 		/*
          * Handles data from WYSIWYG when form is submitted
@@ -359,7 +418,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				$value = rgpost("input_{$field['id']}");
 			}
 			return $value;
-		}
+		} // END itsg_gf_wysiwyg_ckeditor_save_values
 		
 		/*
          * Warning message if Gravity Forms is installed and enabled
@@ -380,37 +439,8 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				</p>
 			</div>
 			<?php
-		}
+		} // END admin_warnings
 	
-		/*
-         * Called when plugin activated, sets default options 
-         */
-		public static function itsg_gf_wysiwyg_ckeditor_plugin_defaults() {
-			//the default options
-			$ITSG_gf_wysiwyg_ckeditor_settings = array(
-				'enable_bold' => 'on',
-				'enable_italic' => 'on',
-				'enable_underline' => 'on',
-				'enable_pastetext' => 'on',
-				'enable_pastefromword' => 'on',
-				'enable_numberedlist' => 'on',
-				'enable_bulletedlist' => 'on',
-				'enable_outdent' => 'on',
-				'enable_indent' => 'on',
-				'enable_link' => 'on',
-				'enable_unlink' => 'on',
-				'enable_format' => 'on',
-				'enable_font' => 'on',
-				'enable_fontsize' => 'on',
-			);
-	 
-			//check to see if present already
-			if(!get_option('ITSG_gf_wysiwyg_ckeditor_settings')) {
-				//option not found, add new
-				add_option('ITSG_gf_wysiwyg_ckeditor_settings', $ITSG_gf_wysiwyg_ckeditor_settings);
-			}
-		} // END itsg_gf_wysiwyg_ckeditor_plugin_defaults
-		
         /*
          * Check if GF is installed
          */
@@ -428,10 +458,9 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 		/*
          * Get plugin url
          */
-
 		 private static function get_base_url(){
 			return plugins_url(null, __FILE__);
-		}
+		} // END get_base_url
 
     }
     $ITSG_GF_WYSIWYG_CKEditor = new ITSG_GF_WYSIWYG_CKEditor();

@@ -1,10 +1,10 @@
 === CKEditor WYSIWYG for Gravity Forms ===
 Contributors: ovann86
 Donate link: http://www.itsupportguides.com/
-Tags: Gravity Forms, CKEditor, WYSIWYG, WCAG
+Tags: Gravity Forms, CKEditor, WYSIWYG, WCAG, accessibility
 Requires at least: 4.0
 Tested up to: 4.2.5
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,12 @@ Most importantly, the plugin **will only count characters** - not spaces and not
 No - not at this point in time.
 
 == Changelog ==
+
+= 1.4.0 =
+* Feature: add CKeditor support for the form editor. textarea fields which are included in the field settings will automatically use the CKeditor - this can be disabled from the CKEditor WYSIWYG settings page.
+* Maintenance: resolve various PHP errors that were appearing in debug mode, but did not affect functionality.
+* Maintenance: improve performance of CKeditor enabled fields by only applying CKeditor to fields on the current displayed page.
+* Maintenance: improve how plugin default settings are handled - changed so settings are automatically saved to the database when first running the plugin, instead defaults are stored in an array and combined with any existing settings.
 
 = 1.3.1 =
 * Maintenance: Upgrade CKEDITOR to Version 4.5.2 - FULL (4 Aug 2015). Version 1.3.0 inadvertently included the CKEDITOR STANDARD - which does not include some of the formatting options.

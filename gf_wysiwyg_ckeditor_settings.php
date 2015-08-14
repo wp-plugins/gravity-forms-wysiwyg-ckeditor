@@ -8,11 +8,13 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor_Settings_Page')) {
     */
 	 public static function settings_page(){
 
-		   $settings = get_option('itsg_gf_wysiwyg_ckeditor_settings') ? get_option('itsg_gf_wysiwyg_ckeditor_settings') : array();
+		   $settings = ITSG_GF_WYSIWYG_CKEditor::get_options();
 
 			$is_submit = rgpost('itsg_gf_wysiwyg_ckeditor_settings_submit');
 
 			if($is_submit){
+			/* ENABLE IN FORM EDITOR */
+				$settings['enable_in_form_editor'] = rgpost('in_form_editor');
 			/* SOURCE */
 				$settings['enable_source'] = rgpost('source');
 			/* BASIC STYLES */ 
@@ -89,7 +91,10 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor_Settings_Page')) {
 				<?php wp_nonce_field("update", "itsg_gf_wysiwyg_ckeditor_update") ?>
 				<input type="hidden" value="1" name="itsg_gf_wysiwyg_ckeditor_settings_submit" />
 				<h3><?php _e("WYSIWYG CKEditor settings", "itsg_gf_wysiwyg_ckeditor") ?></h3>
-				
+				<h4><?php _e("Form editor settings", "itsg_gf_wysiwyg_ckeditor") ?></h4>
+				<input type="checkbox" id="in_form_editor" name="in_form_editor" <?php echo rgar($settings, 'enable_in_form_editor') ? "checked='checked'" : "" ?>  >
+				<label for="in_form_editor">Enable in form editor</label>
+				<h4><?php _e("Toolbar settings", "itsg_gf_wysiwyg_ckeditor") ?></h4>
 				<fieldset>
 				 <legend>Source</legend>
 					 <div>
