@@ -2,7 +2,7 @@
 /*
 Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.4.0
+Version: 1.5.0
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -15,7 +15,7 @@ require_once(plugin_dir_path( __FILE__ ).'gf_wysiwyg_ckeditor_settings.php');
 if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
     class ITSG_GF_WYSIWYG_CKEditor
     {
-	private static $name = 'Gravity Forms - WYSIWYG CKEditor';
+	private static $name = 'CKEditor WYSIWYG for Gravity Forms';
     private static $slug = 'itsg_gf_wysiwyg_ckeditor';
 	
         /**
@@ -225,11 +225,31 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 								] }],
 							allowedContent: true
 							}));
-							
+
 							<?php if (RGForms::get("page") == "gf_edit_forms") { ?>
 							for (var i in CKEDITOR.instances) {
-								CKEDITOR.instances[i].on('key', function() {
-									SetFieldDescription(this.getData());
+								CKEDITOR.instances[i].on('change', function(event) {
+									if (event.sender.name == 'field_description') {
+										SetFieldDescription(this.getData());
+									} else if (event.sender.name  == 'field_content') {
+										SetFieldProperty('content', this.getData());
+									} else if (event.sender.name  == 'infobox_more_info_field') {
+										SetFieldProperty('infobox_more_info_field', this.getData());
+									} else {
+										CKEDITOR.instances[i].updateElement();  
+									}
+								});
+								CKEDITOR.instances[i].on('loaded', function(event) {
+									if (event.sender.name == 'field_description') {
+										SetFieldDescription(this.getData());
+									} else if (event.sender.name  == 'field_content') {
+										SetFieldProperty('content', this.getData());
+									} else if (event.sender.name  == 'infobox_more_info_field') {
+										SetFieldProperty('infobox_more_info_field', this.getData());
+									} else {
+										CKEDITOR.instances[i].updateElement();  
+									}
+									this.setData(this.getData())
 								});
 							}
 							<?php } ?>
@@ -425,7 +445,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
          */
 		public static function admin_warnings() {
 			if ( !self::is_gravityforms_installed() ) {
-				$message = __('Requires Gravity Forms to be installed.', self::$slug);
+				$message = __('requires Gravity Forms to be installed.', self::$slug);
 			} 
 			
 			if (empty($message)) {
@@ -433,19 +453,27 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 			}
 			?>
 			<div class="error">
+				<h3>Warning</h3>
 				<p>
 					<?php _e('The plugin ', self::$slug); ?><strong><?php echo self::$name; ?></strong> <?php echo $message; ?><br />
-					<?php _e('Please ',self::$slug); ?><a href="http://www.gravityforms.com/"><?php _e(' download the latest version',self::$slug); ?></a><?php _e(' of Gravity Forms and try again.',self::$slug) ?>
+					<?php _e('Please ',self::$slug); ?><a target="_blank" href="http://www.gravityforms.com/"><?php _e(' download the latest version',self::$slug); ?></a><?php _e(' of Gravity Forms and try again.',self::$slug) ?>
 				</p>
 			</div>
 			<?php
 		} // END admin_warnings
-	
-        /*
+		
+		/*
          * Check if GF is installed
          */
         private static function is_gravityforms_installed() {
-            return class_exists('GFAPI');
+			if ( !function_exists( 'is_plugin_active' ) || !function_exists( 'is_plugin_active_for_network' ) ) {
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			}
+			if (is_multisite()) {
+				return (is_plugin_active_for_network('gravityforms/gravityforms.php') || is_plugin_active('gravityforms/gravityforms.php') );
+			} else {
+				return is_plugin_active('gravityforms/gravityforms.php');
+			}
         } // END is_gravityforms_installed
 		
 		/*
