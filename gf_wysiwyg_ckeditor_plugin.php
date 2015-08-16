@@ -2,7 +2,7 @@
 /*
 Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.5.0
+Version: 1.5.1
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
@@ -132,7 +132,7 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				(function( $ ) {
 					"use strict";
 					$(function(){
-						$('.gform_page:not(.gform_page[style="display:none;"]) .gform_wysiwyg_ckeditor textarea:not([disabled=disabled]), #field_settings textarea:not([disabled=disabled])').each(function() {
+						$('.gform_wrapper .gform_wysiwyg_ckeditor textarea:not([disabled="disabled"]), .gform_wrapper .gform_page:not([style="display:none;"]) .gform_wysiwyg_ckeditor textarea:not([disabled=disabled]), #field_settings textarea:not([disabled=disabled]), .gf_entry_wrap .postbox .gform_wysiwyg_ckeditor textarea:not([disabled=disabled])').each(function() {
 							$(this).ckeditor(CKEDITOR.tools.extend( {
 							<?php if (RGForms::get("page") !== "gf_edit_forms") { ?>
 							extraPlugins : 'wordcount', 
@@ -228,17 +228,21 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 
 							<?php if (RGForms::get("page") == "gf_edit_forms") { ?>
 							for (var i in CKEDITOR.instances) {
-								CKEDITOR.instances[i].on('change', function(event) {
-									if (event.sender.name == 'field_description') {
-										SetFieldDescription(this.getData());
-									} else if (event.sender.name  == 'field_content') {
-										SetFieldProperty('content', this.getData());
-									} else if (event.sender.name  == 'infobox_more_info_field') {
-										SetFieldProperty('infobox_more_info_field', this.getData());
-									} else {
-										CKEDITOR.instances[i].updateElement();  
-									}
-								});
+								// wrap in half second timeout provides performance improvement by stopping 'change' event from firing multiple times
+								setTimeout(function(){	
+									CKEDITOR.instances[i].on('change', function(event) {
+										if (event.sender.name == 'field_description') {
+											SetFieldDescription(this.getData());
+										} else if (event.sender.name  == 'field_content') {
+											SetFieldProperty('content', this.getData());
+										} else if (event.sender.name  == 'infobox_more_info_field') {
+											SetFieldProperty('infobox_more_info_field', this.getData());
+										} else {
+											CKEDITOR.instances[i].updateElement();  
+										}
+										
+									});
+								},500);
 								CKEDITOR.instances[i].on('loaded', function(event) {
 									if (event.sender.name == 'field_description') {
 										SetFieldDescription(this.getData());
@@ -273,7 +277,13 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 				
 				// runs the main function when field settings have been opened in the form editor
 				
-				jQuery(document).bind('gform_load_field_settings', function($) {itsg_gf_wysiwyg_ckeditor_function(jQuery(this));  });
+				jQuery(document).bind('gform_load_field_settings', function($) {
+					// wrap in half second timeout provides percieved performance inprovement by delaying the CKeditor load until the field settings has loaded
+					// currently commented out due to issues during initial testing
+					//setTimeout(function(){	
+						itsg_gf_wysiwyg_ckeditor_function(jQuery(this));
+					//},500);
+					});
 				
 				<?php } else { ?>
 				
