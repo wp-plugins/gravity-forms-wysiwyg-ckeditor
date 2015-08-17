@@ -99,6 +99,32 @@ Most importantly, the plugin **will only count characters** - not spaces and not
 
 No - not at this point in time.
 
+= How to disable the CKEditor from appearing in the form editor =
+
+As of version 1.5.0 the CKEditor is applied in the back end form editor.
+
+textarea's in side each field edit window will use the CKEditor automatically. For example, the 'Field description' box will have the CKEditor applied.
+
+These fields support HTML, however Gravity Forms does not provide a WYSIWYG visual editor, requiring the person creating the form to manually enter the HTML.
+
+By using CKEditor you are making form creating much easy and providing better formatting options for your field descriptions.
+
+There is a drawback - the CKEditor has an overhead when it needs to load, as well as when you type it needs to send the changes to the field settings.
+
+If this is creating issues for you, or you do not need this feature, you can disable it by going to the Gravity Forms settings menu, then opening WYSIWYG ckeditor menu, unticking the 'Enable in form editor' option and saving the settings.
+
+= Help! The HTML formatting is lost in woocommerce = 
+
+woocommerce will automatically strip the HTML from the field data.
+
+I can't say why they do this, maybe it's for a good reason? But I can provide this code that stops the HTML from being stripped.
+
+'add_filter( 'woocommerce_gforms_strip_meta_html', 'configure_woocommerce_gforms_strip_meta_html' );
+function configure_woocommerce_gforms_strip_meta_html( $strip_html ) {
+    $strip_html = false;
+    return $strip_html;
+}'
+
 == Changelog ==
 
 = 1.5.1 =
