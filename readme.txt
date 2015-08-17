@@ -119,11 +119,11 @@ woocommerce will automatically strip the HTML from the field data.
 
 I can't say why they do this, maybe it's for a good reason? But I can provide this code that stops the HTML from being stripped.
 
-'add_filter( 'woocommerce_gforms_strip_meta_html', 'configure_woocommerce_gforms_strip_meta_html' );
+`add_filter( 'woocommerce_gforms_strip_meta_html', 'configure_woocommerce_gforms_strip_meta_html' );
 function configure_woocommerce_gforms_strip_meta_html( $strip_html ) {
     $strip_html = false;
     return $strip_html;
-}'
+}`
 
 == Changelog ==
 
