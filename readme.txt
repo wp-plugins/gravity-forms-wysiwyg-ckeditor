@@ -134,7 +134,7 @@ function configure_woocommerce_gforms_strip_meta_html( $strip_html ) {
 == Changelog ==
 
 = 1.5.2 =
-* FIX: Resolve issue with field settings on expanding after removing fields in the form editor.
+* FIX: Resolve issue with field settings not expanding after removing a field in the form editor.
 
 = 1.5.1 =
 * FIX: Resolve issues with CKeditor not loading for single page forms.
