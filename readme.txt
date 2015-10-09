@@ -1,10 +1,10 @@
 === CKEditor WYSIWYG for Gravity Forms ===
 Contributors: ovann86
 Donate link: http://www.itsupportguides.com/
-Tags: Gravity Forms, CKEditor, WYSIWYG, WCAG, accessibility
+Tags: Gravity Forms, CKEditor, WYSIWYG, WCAG, accessibility, visual editor, online form, form, forms
 Requires at least: 4.0
-Tested up to: 4.2.5
-Stable tag: 1.5.1
+Tested up to: 4.3.1
+Stable tag: 1.5.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,15 +12,21 @@ Use the CKEditor WYSIWYG in your Gravity Forms
 
 == Description ==
 
-This plugin extends the [Gravity Forms](http://www.gravityforms.com/ "Gravity Forms website") plugin, giving you the option to use [CKEditor](http://ckeditor.com/ "CKEditor website") in your forms.
+> This plugin is an add-on for the <a href="https://www.e-junkie.com/ecom/gb.php?cl=54585&c=ib&aff=299380" target="_blank">Gravity Forms</a>. If you don't yet own a license of the best forms plugin for WordPress, go and <a href="https://www.e-junkie.com/ecom/gb.php?cl=54585&c=ib&aff=299380" target="_blank">buy one now</a>!
 
-The CKEditor can be configured from the Gravity Forms settings menu, allowing you to select which individual buttons are used in the editor.
+**What does this plugin do?**
 
-The CKEditor can be added to the 'Paragraph Text' field found in the 'Standard Fields' tab as well as the 'Body' and 'Custom Field - Paragraph Text' fields found in the 'Post Fields' tab.
+* allows you to add the CKEditor WYSIWYG to 'Paragraph Text', 'Body' and 'Custom Field - Paragraph Text' fields
+* allows you to add the CKEditor WYSIWYG to the form editor - textarea's in the field settings will use the CKEditor WYSIWYG
+* options to control which buttons and features are available in the CKEditor WYSIWYG - found in the Gravity Forms -> Settings -> CKEditor menu.
+
+> See a demo of this plugin at [demo.itsupportguides.com/gravity-forms-wysiwyg-ckeditor/](http://demo.itsupportguides.com/gravity-forms-wysiwyg-ckeditor/ "demo website")
 
 **Why use CKEditor?**
 
 [CKEditor](http://ckeditor.com/ "CKEditor website") is a feature packed WYSIWYG that meets the WCAG 2.0 requirements, providing the best accessibility for your users.
+
+It provides the superior copy-and-paste support for formatted text from Microsoft Word.
 
 This plugin is compatible with the [Gravity Forms Data Persistence Add-On Reloaded](https://wordpress.org/plugins/gravity-forms-data-persistence-add-on-reloaded/ "Gravity Forms Data Persistence Add-On Reloaded website") and [Gravity PDF](https://wordpress.org/plugins/gravity-forms-pdf-extended/ "Gravity PDF website") plugins.
 
@@ -126,6 +132,9 @@ function configure_woocommerce_gforms_strip_meta_html( $strip_html ) {
 }`
 
 == Changelog ==
+
+= 1.5.2 =
+* FIX: Resolve issue with field settings on expanding after removing fields in the form editor.
 
 = 1.5.1 =
 * FIX: Resolve issues with CKeditor not loading for single page forms.

@@ -2,10 +2,28 @@
 /*
 Plugin Name: CKEditor WYSIWYG for Gravity Forms
 Description: Use the CKEditor WYSIWYG in your Gravity Forms
-Version: 1.5.1
+Version: 1.5.2
 Author: Adrian Gordon
 Author URI: http://www.itsupportguides.com 
 License: GPL2
+
+------------------------------------------------------------------------
+Copyright 2015 Adrian Gordon
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
 */
 
 add_action('admin_notices', array('ITSG_GF_WYSIWYG_CKEditor', 'admin_warnings'), 20);
@@ -284,6 +302,18 @@ if (!class_exists('ITSG_GF_WYSIWYG_CKEditor')) {
 						itsg_gf_wysiwyg_ckeditor_function(jQuery(this));
 					//},500);
 					});
+					
+				// destory all existing CKEditor instances when field is delete in form editor - hooks into existing StartDeleteField function.
+				// backup original StartDeleteField
+				var StartDeleteFieldoldCK = StartDeleteField;
+				StartDeleteField = function(field) {
+					// destory all CKEditor instances
+					for(name in CKEDITOR.instances) {
+						CKEDITOR.instances[name].destroy(true);
+					}
+					// call original StartDeleteField
+					StartDeleteFieldoldCK(field);
+				};
 				
 				<?php } else { ?>
 				
